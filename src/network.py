@@ -22,7 +22,8 @@ def get_inferred_default_interface():
 
 
 def get_hardware_port(interface):
-    result = subprocess.run(['networksetup', '-listallhardwareports'], capture_output=True, text=True)
+    networksetup_command_and_args = ['networksetup', '-listallhardwareports']
+    result = subprocess.run(networksetup_command_and_args, capture_output=True, text=True)
 
     # Parsing the output to find the corresponding hardware port for the interface
     output_lines = result.stdout.splitlines()
