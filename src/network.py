@@ -22,13 +22,11 @@ def get_inferred_default_interface():
 
 
 def get_hardware_port(interface):
-    # Running the 'networksetup -listallhardwareports' command
     result = subprocess.run(['networksetup', '-listallhardwareports'], capture_output=True, text=True)
 
     # Parsing the output to find the corresponding hardware port for the interface
     output_lines = result.stdout.splitlines()
     hardware_port = ""
-    current_interface = ""
 
     for line in output_lines:
         if line.startswith("Hardware Port"):
@@ -41,7 +39,11 @@ def get_hardware_port(interface):
     return "Unknown"
 
 
-if __name__ == "__main__":
+def main():
     interface = get_inferred_default_interface()
     hardware_port = get_hardware_port(interface)
     print(f"Active interface: {interface} on '{hardware_port}'")
+
+
+if __name__ == "__main__":
+    main()
