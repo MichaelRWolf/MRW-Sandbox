@@ -43,7 +43,7 @@ def get_hardware_port(interface):
 def main():
     interface = get_inferred_default_interface()
     hardware_port = get_hardware_port(interface)
-    print(f"Active interface:\n    '{hardware_port}' ({interface})")
+    print(f"'{hardware_port}' ({interface})")
 
 
 if __name__ == "__main__":
