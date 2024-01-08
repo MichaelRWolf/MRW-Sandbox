@@ -1,4 +1,5 @@
 import socket
+import subprocess
 
 import psutil
 
@@ -18,7 +19,27 @@ def get_inferred_default_interface():
     return None
 
 
-# When file is executed, it prints the value returned from get_inferred_default_interface()
+def get_hardware_port(interface):
+    # Running the 'networksetup -listallhardwareports' command
+    result = subprocess.run(['networksetup', '-listallhardwareports'], capture_output=True, text=True)
+
+    # Parsing the output to find the corresponding hardware port for the interface
+    output_lines = result.stdout.splitlines()
+    hardware_port = ""
+    current_interface = ""
+
+    for line in output_lines:
+        if line.startswith("Hardware Port"):
+            hardware_port = line.split(":")[1].strip()
+        if line.startswith("Device"):
+            current_interface = line.split(":")[1].strip()
+            if current_interface == interface:
+                return hardware_port
+
+    return "Unknown"
+
+
 if __name__ == "__main__":
-    active_interface = get_inferred_default_interface()
-    print(active_interface)
+    interface = get_inferred_default_interface()
+    hardware_port = get_hardware_port(interface)
+    print(f"Active interface: {interface} on '{hardware_port}'")
